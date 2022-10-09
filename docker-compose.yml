@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  api:
+    container_name: "api.acquirer-gateway.dev"
+    build:
+      context: ./
+      target: dev
+    command: server:watch
+    volumes:
+      - ./:/opt/www
+    ports:
+      - 9090:9501
+    networks:
+      - simple-payment
+
+  database:
+    container_name: "db.acquirer-gateway.dev"
+    image: postgres:14.5-alpine
+    ports:
+      - 9032:5432
+    environment:
+      POSTGRES_USER: acquirer_gateway
+      POSTGRES_DB: acquirer_gateway
+      POSTGRES_PASSWORD: "@123456"
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./docker/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - simple-payment
+
+  redis:
+    container_name: "cache.acquirer-gateway.dev"
+    image: redis:6.2.6-alpine
+    ports:
+      - "9079:6379"
+    networks:
+      - simple-payment
+
+volumes:
+  db:
+
+networks:
+  simple-payment:
+    external: true

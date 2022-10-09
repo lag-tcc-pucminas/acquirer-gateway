@@ -1,0 +1,1 @@
+CREATE DATABASE acquirer_gateway_test;

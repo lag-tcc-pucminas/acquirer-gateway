@@ -1,0 +1,348 @@
+openapi: 3.0.0
+info:
+  title: 'Acquirer Gateway API'
+  description: 'Acquirer Gateway OpenAPI Documentation'
+  version: 1.0.0
+paths:
+  '/acquirer-prioritization/{brand}':
+    get:
+      tags:
+        - 'Delete Acquirer Prioritization Cache'
+      summary: 'Delete Acquirer Prioritization Cache'
+      description: 'Delete Acquirer Prioritization Cache'
+      operationId: 'Delete Acquirer Prioritization Cache'
+      parameters:
+        -
+          name: brand
+          in: path
+          required: true
+          schema:
+            type: string
+            example: mastercard
+      responses:
+        '200':
+          description: 'Cache Successfully Removed.'
+  '/circuit/{acquirer}':
+    get:
+      tags:
+        - 'Get Acquirer Circuit Status'
+      summary: 'Get Acquirer Circuit Status'
+      description: 'Get Acquirer Circuit Status'
+      operationId: 'Get Acquirer Circuit Status'
+      parameters:
+        -
+          name: acquirer
+          in: path
+          required: true
+          schema:
+            type: string
+            example: green
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CircuitStatus'
+        '404':
+          description: 'Not Found'
+    post:
+      tags:
+        - 'Open Acquirer Circuit'
+      summary: 'Open Acquirer Circuit'
+      description: 'Marks the acquirer as not available by opening the circuit.'
+      operationId: 'Open Acquirer Circuit'
+      parameters:
+        -
+          name: acquirer
+          in: path
+          required: true
+          schema:
+            type: string
+            example: green
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: 'Not Found'
+    delete:
+      tags:
+        - 'Close Acquirer Circuit'
+      summary: 'Close Acquirer Circuit'
+      description: 'Marks the acquirer as available by closing the circuit.'
+      operationId: 'Close Acquirer Circuit'
+      parameters:
+        -
+          name: acquirer
+          in: path
+          required: true
+          schema:
+            type: string
+            example: green
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: 'Not Found'
+  /health:
+    get:
+      tags:
+        - 'Health Check'
+      summary: 'Health Check'
+      description: 'Health Check'
+      operationId: health
+      responses:
+        '200':
+          description: 'Application Is Alive'
+  /payment:
+    post:
+      tags:
+        - 'Authorize Payment'
+      summary: 'Authorize Payment'
+      description: 'Authorize Payment'
+      operationId: 'Authorize Payment'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizeRequest'
+      responses:
+        '201':
+          description: 'Created Payment Data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResource'
+        '409':
+          description: 'The given idempotency id has already been used.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResource'
+        '422':
+          description: 'Invalid Request'
+        '424':
+          description: 'An error occurred during the acquirer prioritization query.'
+  '/payment/{idempotency_id}':
+    get:
+      tags:
+        - 'Get Payment By Idempotency Id'
+      summary: 'Get Payment By Idempotency Id'
+      description: 'Get Payment By Idempotency Id'
+      operationId: 'Get Payment By Idempotency Id'
+      parameters:
+        -
+          name: idempotency_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 72d5d38a-dd57-4f36-91b5-6cf767f21049
+      responses:
+        '200':
+          description: 'Found Payment Data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResource'
+        '404':
+          description: 'Not Found'
+components:
+  schemas:
+    CircuitStatus:
+      properties:
+        is_available:
+          type: boolean
+          example: false
+        failures_counter:
+          type: integer
+          example: 2
+      type: object
+    AuthorizeRequest:
+      properties:
+        idempotency_id:
+          type: string
+          example: 3a2567c0-e7a9-4b29-b07a-bbdfd337a47d
+        value:
+          description: 'Payment amount in cents'
+          type: integer
+          example: '10000'
+        installments:
+          description: 'Number of installments'
+          type: integer
+          example: '1'
+        mode:
+          type: string
+          example: credit|debit
+        card:
+          properties:
+            brand:
+              type: string
+              example: visa
+            holder:
+              description: 'Card Holder Name'
+              type: string
+              example: John
+            pan:
+              type: string
+              example: '4111111111111111'
+            cvv:
+              type: integer
+              example: '134'
+            expiry_date:
+              type: string
+              example: 12/2025
+          type: object
+        payer:
+          properties:
+            name:
+              type: string
+              example: John
+            document:
+              type: string
+              example: '65591145035'
+            email:
+              type: string
+              example: john@fake.com
+            phone:
+              type: string
+              example: '(11) 11111-1111'
+          type: object
+        seller:
+          properties:
+            name:
+              type: string
+              example: 'Joaquim''s Bakery'
+            document:
+              type: string
+              example: '12891765000148'
+            email:
+              type: string
+              example: joaquim@bakery.com
+            phone:
+              type: string
+              example: '(11) 3811-6100'
+            mcc:
+              type: integer
+              example: '5946'
+            address:
+              properties:
+                zip_code:
+                  type: string
+                  example: 09894-050
+                country:
+                  type: string
+                  example: BR
+                state:
+                  type: string
+                  example: SP
+                city:
+                  type: string
+                  example: 'São Bernardo do Campo'
+                neighborhood:
+                  type: string
+                  example: Jordanópolis
+                street:
+                  type: string
+                  example: 'Rua Silas de Oliveira'
+                number:
+                  type: string
+                  example: '341'
+                complement:
+                  type: string
+                  example: 'Next to the market'
+              type: object
+          type: object
+      type: object
+    PaymentAcquirerAttemptResource:
+      properties:
+        id:
+          type: integer
+          example: '1'
+        status:
+          type: string
+          example: PENDING|SUCCEEDED|FAILED|SKIPPED
+        acquirer:
+          type: string
+          example: blue
+        code:
+          nullable: true
+          type: string
+          example: 00|N7|51
+        message:
+          nullable: true
+          type: string
+          example: Authorized
+      type: object
+    PaymentResource:
+      properties:
+        id:
+          type: integer
+          example: '1'
+        idempotency_id:
+          type: string
+          example: 65288618-0d8e-40d6-a074-5ad0b4f8b459
+        status:
+          nullable: true
+          type: string
+          example: INITIAL|NOT_AUTHORIZED|AUTHORIZED|FAILED
+        code:
+          nullable: true
+          type: string
+          example: 00|N7|51
+        message:
+          nullable: true
+          type: string
+          example: Authorized
+        acquirer:
+          type: string
+          example: blue
+        acquirer_reference:
+          nullable: true
+          type: string
+          example: 49883da8-aaec-440b-9dc1-84797440f977
+        nsu:
+          nullable: true
+          type: string
+          example: '917624'
+        authorization_code:
+          nullable: true
+          type: string
+          example: '819571782893'
+        mode:
+          type: string
+          example: credit|debit
+        mcc:
+          type: integer
+          example: '8999'
+        value:
+          type: integer
+          example: '10000'
+        installments:
+          type: integer
+          example: '12'
+        attempts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentAcquirerAttemptResource'
+          example:
+            -
+              id: 1
+              status: SKIPPED
+              acquirer: blue
+              code: null
+              message: null
+            -
+              id: 2
+              status: FAILED
+              acquirer: red
+              code: null
+              message: null
+            -
+              id: 3
+              status: SUCCEEDED
+              acquirer: green
+              code: '00'
+              message: Authorized
+      type: object
