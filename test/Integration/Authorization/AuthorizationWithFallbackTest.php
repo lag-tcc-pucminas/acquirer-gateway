@@ -4,7 +4,7 @@ namespace Test\Integration\Authorization;
 
 use App\Enum\AcquirerEnum;
 use App\Enum\BrandEnum;
-use App\Enum\PaymentAttemptStatus;
+use App\Enum\PaymentAttemptStatusEnum;
 use App\Enum\PaymentStatusEnum;
 use Psr\Http\Message\ResponseInterface;
 
@@ -37,10 +37,10 @@ class AuthorizationWithFallbackTest extends AuthorizationTest
         list($firstAttempt, $secondAttempt) = $attempts;
 
         $this->assertEquals($firstAttempt['acquirer'], AcquirerEnum::GREEN);
-        $this->assertEquals($firstAttempt['status'], PaymentAttemptStatus::FAILED);
+        $this->assertEquals($firstAttempt['status'], PaymentAttemptStatusEnum::FAILED);
 
         $this->assertEquals($secondAttempt['acquirer'], AcquirerEnum::BLUE);
-        $this->assertEquals($secondAttempt['status'], PaymentAttemptStatus::SUCCEEDED);
+        $this->assertEquals($secondAttempt['status'], PaymentAttemptStatusEnum::SUCCEEDED);
     }
 
     public function testShouldUseFallbackWhenFirstAcquirerIsNotAvailable(): void
@@ -74,10 +74,10 @@ class AuthorizationWithFallbackTest extends AuthorizationTest
         list($firstAttempt, $secondAttempt) = $attempts;
 
         $this->assertEquals($firstAttempt['acquirer'], AcquirerEnum::RED);
-        $this->assertEquals($firstAttempt['status'], PaymentAttemptStatus::SKIPPED);
+        $this->assertEquals($firstAttempt['status'], PaymentAttemptStatusEnum::SKIPPED);
 
         $this->assertEquals($secondAttempt['acquirer'], AcquirerEnum::BLUE);
-        $this->assertEquals($secondAttempt['status'], PaymentAttemptStatus::SUCCEEDED);
+        $this->assertEquals($secondAttempt['status'], PaymentAttemptStatusEnum::SUCCEEDED);
     }
 
     public function testShouldReturnConflictWhenIdempotencyIdAlreadyBeUsed(): void

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service;
+namespace App\Facade;
 
 use InvalidArgumentException;
 use LeoCarmo\CircuitBreaker\CircuitBreaker;
 
-class CircuitBreakerService
+class CircuitBreakerFacade
 {
     /**
      * @param CircuitBreaker[] $acquirerCircuits

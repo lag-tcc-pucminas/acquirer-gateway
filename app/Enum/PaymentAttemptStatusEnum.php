@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-class PaymentAttemptStatus
+class PaymentAttemptStatusEnum
 {
     public const PENDING = 'PENDING';
     public const SUCCEEDED = 'SUCCEEDED';

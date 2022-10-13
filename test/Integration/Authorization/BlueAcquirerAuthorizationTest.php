@@ -4,7 +4,7 @@ namespace Test\Integration\Authorization;
 
 use App\Enum\AcquirerEnum;
 use App\Enum\BrandEnum;
-use App\Enum\PaymentAttemptStatus;
+use App\Enum\PaymentAttemptStatusEnum;
 use App\Enum\PaymentStatusEnum;
 use Psr\Http\Message\ResponseInterface;
 
@@ -31,7 +31,7 @@ class BlueAcquirerAuthorizationTest extends AuthorizationTest
             [PaymentStatusEnum::AUTHORIZED, PaymentStatusEnum::NOT_AUTHORIZED]
         ));
         $this->assertEquals(AcquirerEnum::BLUE, $responseBody['acquirer']);
-        $this->assertEquals(PaymentAttemptStatus::SUCCEEDED, $responseBody['attempts'][0]['status']);
+        $this->assertEquals(PaymentAttemptStatusEnum::SUCCEEDED, $responseBody['attempts'][0]['status']);
     }
 
     public function testAcquirerShouldErrorWhenCardBrandNotIsVisaOrMastercard(): void
@@ -56,7 +56,7 @@ class BlueAcquirerAuthorizationTest extends AuthorizationTest
 
         $this->assertEquals(PaymentStatusEnum::FAILED, $responseBody['status']);
         $this->assertEquals(AcquirerEnum::BLUE, $responseBody['acquirer']);
-        $this->assertEquals(PaymentAttemptStatus::FAILED, $responseBody['attempts'][0]['status']);
+        $this->assertEquals(PaymentAttemptStatusEnum::FAILED, $responseBody['attempts'][0]['status']);
 
         $this->assertEquals(1, $this->redis->get('circuit-breaker:blue:blue:failures'));
     }

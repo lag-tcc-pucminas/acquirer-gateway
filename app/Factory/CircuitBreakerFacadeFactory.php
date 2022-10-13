@@ -3,14 +3,14 @@
 namespace App\Factory;
 
 use App\Enum\AcquirerEnum;
-use App\Service\CircuitBreakerService;
+use App\Facade\CircuitBreakerFacade;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Redis\Redis;
 use LeoCarmo\CircuitBreaker\Adapters\RedisAdapter;
 use LeoCarmo\CircuitBreaker\CircuitBreaker;
 use Psr\Container\ContainerInterface;
 
-class CircuitBreakerServiceFactory
+class CircuitBreakerFacadeFactory
 {
     public function __invoke(ContainerInterface $container)
     {
@@ -29,6 +29,6 @@ class CircuitBreakerServiceFactory
             $circuits[$acquirer] = $circuit;
         }
 
-        return new CircuitBreakerService($circuits);
+        return new CircuitBreakerFacade($circuits);
     }
 }

@@ -22,7 +22,7 @@ interface CircuitBreakerControllerDocumentation
      *   operationId="Get Acquirer Circuit Status",
      *   summary="Get Acquirer Circuit Status",
      *   description="Get Acquirer Circuit Status",
-     *   tags={"Get Acquirer Circuit Status"},
+     *   tags={"Circuit Breaker"},
      *   @OA\Parameter(
      *     name="acquirer",
      *     in="path",
@@ -48,7 +48,7 @@ interface CircuitBreakerControllerDocumentation
      *   operationId="Open Acquirer Circuit",
      *   summary="Open Acquirer Circuit",
      *   description="Marks the acquirer as not available by opening the circuit.",
-     *   tags={"Open Acquirer Circuit"},
+     *   tags={"Circuit Breaker"},
      *   @OA\Parameter(
      *     name="acquirer",
      *     in="path",
@@ -70,7 +70,7 @@ interface CircuitBreakerControllerDocumentation
      *   operationId="Close Acquirer Circuit",
      *   summary="Close Acquirer Circuit",
      *   description="Marks the acquirer as available by closing the circuit.",
-     *   tags={"Close Acquirer Circuit"},
+     *   tags={"Circuit Breaker"},
      *   @OA\Parameter(
      *     name="acquirer",
      *     in="path",

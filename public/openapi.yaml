@@ -5,9 +5,9 @@ info:
   version: 1.0.0
 paths:
   '/acquirer-prioritization/{brand}':
-    get:
+    delete:
       tags:
-        - 'Delete Acquirer Prioritization Cache'
+        - 'Acquirer Prioritization'
       summary: 'Delete Acquirer Prioritization Cache'
       description: 'Delete Acquirer Prioritization Cache'
       operationId: 'Delete Acquirer Prioritization Cache'
@@ -25,7 +25,7 @@ paths:
   '/circuit/{acquirer}':
     get:
       tags:
-        - 'Get Acquirer Circuit Status'
+        - 'Circuit Breaker'
       summary: 'Get Acquirer Circuit Status'
       description: 'Get Acquirer Circuit Status'
       operationId: 'Get Acquirer Circuit Status'
@@ -48,7 +48,7 @@ paths:
           description: 'Not Found'
     post:
       tags:
-        - 'Open Acquirer Circuit'
+        - 'Circuit Breaker'
       summary: 'Open Acquirer Circuit'
       description: 'Marks the acquirer as not available by opening the circuit.'
       operationId: 'Open Acquirer Circuit'
@@ -67,7 +67,7 @@ paths:
           description: 'Not Found'
     delete:
       tags:
-        - 'Close Acquirer Circuit'
+        - 'Circuit Breaker'
       summary: 'Close Acquirer Circuit'
       description: 'Marks the acquirer as available by closing the circuit.'
       operationId: 'Close Acquirer Circuit'
@@ -84,20 +84,10 @@ paths:
           description: OK
         '404':
           description: 'Not Found'
-  /health:
-    get:
-      tags:
-        - 'Health Check'
-      summary: 'Health Check'
-      description: 'Health Check'
-      operationId: health
-      responses:
-        '200':
-          description: 'Application Is Alive'
   /payment:
     post:
       tags:
-        - 'Authorize Payment'
+        - Payment
       summary: 'Authorize Payment'
       description: 'Authorize Payment'
       operationId: 'Authorize Payment'
@@ -127,7 +117,7 @@ paths:
   '/payment/{idempotency_id}':
     get:
       tags:
-        - 'Get Payment By Idempotency Id'
+        - Payment
       summary: 'Get Payment By Idempotency Id'
       description: 'Get Payment By Idempotency Id'
       operationId: 'Get Payment By Idempotency Id'

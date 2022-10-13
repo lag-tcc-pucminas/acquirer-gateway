@@ -15,7 +15,7 @@ Para mais informações consulte o swagger do projeto através da rota `/docs`.
 ## Adquirentes
 
 O projeto possui adquirentes internas que simulam a integração com uma interface de pagamentos externa.
-Cada uma das adquirentes possui 50% de change de aprovar uma transação, além de um cenário específico que simula um erro de integração ou indisponibilidade.
+Cada uma das adquirentes possui 50% de chance de aprovar uma transação, além de um cenário específico que simula um erro de integração ou indisponibilidade.
 
 Adquirentes Internas:
 - **Green**: retorna erro quando o valor do pagamento é composto por somente **um dígito distinto**, exemplo: 888;

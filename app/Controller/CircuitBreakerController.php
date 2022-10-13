@@ -3,16 +3,16 @@
 namespace App\Controller;
 
 use App\Controller\Documentation\CircuitBreakerControllerDocumentation;
-use App\Service\CircuitBreakerService;
-use Hyperf\HttpServer\Contract\ResponseInterface as Response;
+use App\Facade\CircuitBreakerFacade;
 use Hyperf\HttpServer\Contract\RequestInterface as Request;
+use Hyperf\HttpServer\Contract\ResponseInterface as Response;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
 class CircuitBreakerController implements CircuitBreakerControllerDocumentation
 {
     public function __construct(
-        private CircuitBreakerService $service
+        private CircuitBreakerFacade $service
     ) {
     }
 

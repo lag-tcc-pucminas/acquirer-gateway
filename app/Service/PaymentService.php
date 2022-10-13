@@ -6,9 +6,10 @@ use App\Acquirer\AcquirerFactory;
 use App\Acquirer\Dto\AcquirerResult;
 use App\Acquirer\Dto\AuthorizeResultData;
 use App\Dto\PaymentContext;
-use App\Enum\PaymentAttemptStatus;
+use App\Enum\PaymentAttemptStatusEnum;
 use App\Enum\PaymentStatusEnum;
 use App\Exception\IdempotencyException;
+use App\Facade\CircuitBreakerFacade;
 use App\Http\Request\AuthorizeRequest;
 use App\Model\Payment;
 use App\Model\PaymentAcquirerAttempt;
@@ -19,7 +20,7 @@ class PaymentService
 {
     public function __construct(
         private AcquirerPrioritizationService $acquirerPrioritizationService,
-        private CircuitBreakerService         $circuitBreakerService,
+        private CircuitBreakerFacade          $circuitBreakerService,
         private AcquirerFactory               $acquirerFactory,
         private PaymentRepository             $repository
     ) {
@@ -51,7 +52,7 @@ class PaymentService
 
             $this->authorizePayment($payment, $context);
 
-            if ($payment->getCurrentAttempt()->status == PaymentAttemptStatus::SUCCEEDED) {
+            if ($payment->getCurrentAttempt()->status == PaymentAttemptStatusEnum::SUCCEEDED) {
                 $hasSuccessfulAttempt = true;
             }
 
@@ -98,7 +99,7 @@ class PaymentService
     {
         $payment->acquirerAttempts->add(PaymentAcquirerAttempt::make([
             'acquirer' => $payment->acquirer,
-            'status' => PaymentAttemptStatus::PENDING,
+            'status' => PaymentAttemptStatusEnum::PENDING,
             'external_reference' => Str::random(),
             'payment_id' => $payment->id
         ]));
@@ -108,7 +109,7 @@ class PaymentService
     {
         $payment->acquirerAttempts->add(PaymentAcquirerAttempt::make([
             'acquirer' => $payment->acquirer,
-            'status' => PaymentAttemptStatus::SKIPPED,
+            'status' => PaymentAttemptStatusEnum::SKIPPED,
             'external_reference' => Str::random(),
             'payment_id' => $payment->id
         ]));
@@ -120,7 +121,7 @@ class PaymentService
             $payment->status = PaymentStatusEnum::FAILED;
 
             $attempt = $payment->getCurrentAttempt();
-            $attempt->status = PaymentAttemptStatus::FAILED;
+            $attempt->status = PaymentAttemptStatusEnum::FAILED;
 
             $this->circuitBreakerService->failure($payment->acquirer);
             return;
@@ -138,7 +139,7 @@ class PaymentService
         $payment->authorization_code = $authorizeResultData->authorizationCode;
 
         $attempt = $payment->getCurrentAttempt();
-        $attempt->status = PaymentAttemptStatus::SUCCEEDED;
+        $attempt->status = PaymentAttemptStatusEnum::SUCCEEDED;
         $attempt->acquirer_code = $authorizeResultData->code;
         $attempt->acquirer_message = $authorizeResultData->message;
 

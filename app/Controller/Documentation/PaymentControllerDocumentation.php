@@ -16,7 +16,7 @@ interface PaymentControllerDocumentation
      *   operationId="Authorize Payment",
      *   summary="Authorize Payment",
      *   description="Authorize Payment",
-     *   tags={"Authorize Payment"},
+     *   tags={"Payment"},
      *   @OA\RequestBody(
      *     required=true,
      *     @OA\JsonContent(ref="#/components/schemas/AuthorizeRequest")
@@ -43,7 +43,7 @@ interface PaymentControllerDocumentation
      *   operationId="Get Payment By Idempotency Id",
      *   summary="Get Payment By Idempotency Id",
      *   description="Get Payment By Idempotency Id",
-     *   tags={"Get Payment By Idempotency Id"},
+     *   tags={"Payment"},
      *   @OA\Parameter(
      *     name="idempotency_id",
      *     in="path",

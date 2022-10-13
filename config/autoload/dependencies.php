@@ -10,17 +10,17 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
+use App\Facade\CircuitBreakerFacade;
 use App\Factory\CacheAcquirerPrioritizationServiceFactory;
-use App\Factory\CircuitBreakerServiceFactory;
+use App\Factory\CircuitBreakerFacadeFactory;
 use App\Service\AcquirerPrioritization\CacheAcquirerPrioritizationService;
 use App\Service\AcquirerPrioritizationService;
-use App\Service\CircuitBreakerService;
 
 return [
     # Bindings
     AcquirerPrioritizationService::class => CacheAcquirerPrioritizationServiceFactory::class,
 
     # Factories
-    CircuitBreakerService::class => CircuitBreakerServiceFactory::class,
+    CircuitBreakerFacade::class => CircuitBreakerFacadeFactory::class,
     CacheAcquirerPrioritizationService::class => CacheAcquirerPrioritizationServiceFactory::class,
 ];

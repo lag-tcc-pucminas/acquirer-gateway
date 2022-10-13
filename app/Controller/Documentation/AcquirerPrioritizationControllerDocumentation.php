@@ -10,12 +10,12 @@ use OpenApi\Annotations as OA;
 interface AcquirerPrioritizationControllerDocumentation
 {
     /**
-     * @OA\Get(
+     * @OA\Delete(
      *      path="/acquirer-prioritization/{brand}",
      *      operationId="Delete Acquirer Prioritization Cache",
      *      summary="Delete Acquirer Prioritization Cache",
      *      description="Delete Acquirer Prioritization Cache",
-     *      tags={"Delete Acquirer Prioritization Cache"},
+     *      tags={"Acquirer Prioritization"},
      *      @OA\Parameter(
      *         name="brand",
      *         in="path",
