@@ -20,11 +20,10 @@ Cada uma das adquirentes possui 50% de chance de aprovar uma transação, além 
 Adquirentes Internas:
 - **Green**: retorna erro quando o valor do pagamento é composto por somente **um dígito distinto**, exemplo: 888;
 - **Blue**: retorna erro quando o cartão informado não tenha sido emitido pela bandeira **visa** ou **mastercard**;
-- **Red**: retorna erro quando o pagamento solicitado possuir mais do que 6 parcelas;
+- **Red**: retorna erro quando o pagamento solicitado possuir **mais do que 6 parcelas**;
 
 
 ## Links Úteis
 - [Vídeo 1 - Apresentação](https://youtu.be/YX3vLXgjSTU)
-- [Postman Collection](https://www.getpostman.com/collections/5ac337cae4677043486d)
 
 
